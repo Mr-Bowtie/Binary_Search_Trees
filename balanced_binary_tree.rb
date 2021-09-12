@@ -1,17 +1,16 @@
 require 'pry'
 
 class Node
-  include Comparable
   attr_accessor :data, :left, :right
-
-  def <=>(other)
-    data <=> other.data
-  end
 
   def initialize(data)
     @data = data
     @left = nil
     @right = nil
+  end
+
+  def leaf?
+    left == nil && right == nil ? true : false
   end
 end
 
@@ -37,6 +36,18 @@ class Tree
     root
   end
 
+  def insert(value, node = @root)
+    return @root = Node.new(value) unless @root
+
+    if node.data == value
+      return nil
+    elsif node.data < value
+      node.right.nil? ? node.right = Node.new(value) : insert(value, node.right)
+    else
+      node.left.nil? ? node.left = Node.new(value) : insert(value, node.left)
+    end
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -44,5 +55,9 @@ class Tree
   end
 end
 
-best_tree = Tree.new([4, 3, 7, 8, 2, 9, 9, 0])
+best_tree = Tree.new([4, 3, 7, 8, 2, 9])
+best_tree.insert(1)
 best_tree.pretty_print
+other_tree = Tree.new([])
+other_tree.insert(1)
+other_tree.pretty_print
