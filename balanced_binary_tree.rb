@@ -12,3 +12,13 @@ class Node
     @right_child = nil
   end
 end
+
+class Tree
+  attr_reader :array
+  attr_accessor :root
+
+  def initialize(array)
+    @array = array
+    @root = nil
+  end
+end
