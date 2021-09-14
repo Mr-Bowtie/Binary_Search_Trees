@@ -9,8 +9,14 @@ class Node
     @right = nil
   end
 
-  def leaf?
-    left == nil && right == nil ? true : false
+  def child_num
+    if left != nil && right != nil
+      2
+    elsif left != nil || right != nil
+      1
+    else
+      0
+    end
   end
 end
 
@@ -48,6 +54,38 @@ class Tree
     end
   end
 
+  def delete(value, node = @root)
+    return node if node.nil?
+
+    if value > node.data
+      node.right = delete(value, node.right)
+    elsif value < node.data
+      node.left = delete(value, node.left)
+    else
+      # handles case of 1 or 0 children
+      return node.right if node.left.nil?
+      return node.left if node.right.nil?
+
+      # if node has 2 childen: find the next largest node
+      successor = inorder_successor(node)
+      # copy successor value to the current node
+      node.data = successor.data
+      # delete it from the branch to the right ( to avoid deleting the current node )
+      delete(successor.data, node.right)
+    end
+    node
+  end
+
+  def inorder_successor(node = @root)
+    return nil if node.child_num.zero?
+    node = node.right
+    return node if node.left.nil?
+    until node.child_num.zero?
+      node = node.left
+    end
+    node
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -55,9 +93,7 @@ class Tree
   end
 end
 
-best_tree = Tree.new([4, 3, 7, 8, 2, 9])
-best_tree.insert(1)
+best_tree = Tree.new([1, 4, 3, 7, 8, 2, 9, 6, 5])
 best_tree.pretty_print
-other_tree = Tree.new([])
-other_tree.insert(1)
-other_tree.pretty_print
+best_tree.delete(5)
+best_tree.pretty_print
