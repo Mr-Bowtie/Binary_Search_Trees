@@ -86,6 +86,16 @@ class Tree
     node
   end
 
+  def find(value, node = @root)
+    return node if node.data == value
+
+    if value < node.data
+      find(value, node.left)
+    else
+      find(value, node.right)
+    end
+  end
+
   # #iterative solution
   # def level_order
   #   current_node = @root
@@ -142,4 +152,4 @@ end
 
 best_tree = Tree.new([1, 4, 3, 7, 8, 2, 9, 6, 5])
 best_tree.pretty_print
-p best_tree.postorder
+p best_tree.find(7)
