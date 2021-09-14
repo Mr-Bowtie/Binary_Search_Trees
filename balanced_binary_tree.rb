@@ -86,6 +86,32 @@ class Tree
     node
   end
 
+  # #iterative solution
+  # def level_order
+  #   current_node = @root
+  #   queue = [] << current_node
+  #   tree_values = []
+  #   until queue.empty?
+  #     queue << current_node.left unless current_node.left.nil?
+  #     queue << current_node.right unless current_node.right.nil?
+
+  #     tree_values << queue.shift.data
+  #     current_node = queue[0]
+  #   end
+  #   tree_values
+  # end
+
+  # recursive solution
+  def level_order(node = @root, queue = [@root], values = [])
+    queue << node.left unless node.left.nil?
+    queue << node.right unless node.right.nil?
+
+    values << queue.shift.data
+    return values if queue.empty?
+
+    level_order(queue[0], queue, values)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -95,5 +121,4 @@ end
 
 best_tree = Tree.new([1, 4, 3, 7, 8, 2, 9, 6, 5])
 best_tree.pretty_print
-best_tree.delete(5)
-best_tree.pretty_print
+p best_tree.level_order
