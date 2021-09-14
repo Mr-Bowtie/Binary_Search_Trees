@@ -112,6 +112,27 @@ class Tree
     level_order(queue[0], queue, values)
   end
 
+  def preorder(node = @root, values = [])
+    return values if node.nil?
+    values << node.data
+    preorder(node.left, values)
+    preorder(node.right, values)
+  end
+
+  def inorder(node = @root, values = [])
+    return values if node.nil?
+    inorder(node.left, values)
+    values << node.data
+    inorder(node.right, values)
+  end
+
+  def postorder(node = @root, values = [])
+    return values if node.nil?
+    postorder(node.left, values)
+    postorder(node.right, values)
+    values << node.data
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -121,4 +142,4 @@ end
 
 best_tree = Tree.new([1, 4, 3, 7, 8, 2, 9, 6, 5])
 best_tree.pretty_print
-p best_tree.level_order
+p best_tree.postorder
