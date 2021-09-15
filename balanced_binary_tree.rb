@@ -132,6 +132,8 @@ class Tree
   def inorder(node = @root, values = [])
     return values if node.nil?
     inorder(node.left, values)
+    puts "Data: #{node.data}"
+    puts "Height: #{height(node)}"
     values << node.data
     inorder(node.right, values)
   end
@@ -143,6 +145,15 @@ class Tree
     values << node.data
   end
 
+  def height(node)
+    return 0 if node.child_num == 0
+    left_height = 1 + height(node.left) unless node.left.nil?
+    right_height = 1 + height(node.right) unless node.right.nil?
+    return left_height if right_height.nil?
+    return right_height if left_height.nil?
+    left_height > right_height ? left_height : right_height
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -150,6 +161,8 @@ class Tree
   end
 end
 
-best_tree = Tree.new([1, 4, 3, 7, 8, 2, 9, 6, 5])
+arr = []
+1.upto(20) { |i| arr << i }
+best_tree = Tree.new(arr)
 best_tree.pretty_print
-p best_tree.find(7)
+puts best_tree.inorder
