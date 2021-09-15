@@ -166,18 +166,21 @@ class Tree
     end
   end
 
+  def balanced?
+    left_height = height(@root.left)
+    right_height = height(@root.right)
+
+    (left_height - right_height).abs <= 1 ? true : false
+  end
+
+  def rebalance
+    values = level_order
+    Tree.new(values)
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
-
-arr = []
-1.upto(20) { |i| arr << i }
-best_tree = Tree.new(arr)
-best_tree.pretty_print
-puts best_tree.depth(best_tree.find(9))
-# puts best_tree.depth(best_tree.find(21))
-puts best_tree.depth(best_tree.find(10))
-puts best_tree.depth(best_tree.find(3))
