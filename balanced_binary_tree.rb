@@ -154,6 +154,18 @@ class Tree
     left_height > right_height ? left_height : right_height
   end
 
+  def depth(node, root = @root)
+    return nil if node.nil?
+
+    if node.data < root.data
+      1 + depth(node, root.left)
+    elsif node.data > root.data
+      1 + depth(node, root.right)
+    else
+      return 0
+    end
+  end
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
@@ -165,4 +177,7 @@ arr = []
 1.upto(20) { |i| arr << i }
 best_tree = Tree.new(arr)
 best_tree.pretty_print
-puts best_tree.inorder
+puts best_tree.depth(best_tree.find(9))
+# puts best_tree.depth(best_tree.find(21))
+puts best_tree.depth(best_tree.find(10))
+puts best_tree.depth(best_tree.find(3))
