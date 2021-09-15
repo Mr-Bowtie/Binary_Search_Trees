@@ -132,8 +132,6 @@ class Tree
   def inorder(node = @root, values = [])
     return values if node.nil?
     inorder(node.left, values)
-    puts "Data: #{node.data}"
-    puts "Height: #{height(node)}"
     values << node.data
     inorder(node.right, values)
   end
@@ -184,3 +182,38 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
+
+# Driver Script
+
+tree = Tree.new(Array.new(15) { rand(1..100) })
+tree.pretty_print
+
+puts 'is the tree balanced?'
+puts tree.balanced?
+puts 'Level order:'
+p tree.level_order
+puts 'Pre-order:'
+p tree.preorder
+puts 'In-order:'
+p tree.inorder
+puts 'Post-order:'
+p tree.postorder
+
+10.times { tree.insert(rand(101..150)) }
+tree.pretty_print
+puts 'is the tree balanced?'
+puts tree.balanced?
+
+tree = tree.rebalance
+tree.pretty_print
+
+puts 'is the tree balanced?'
+puts tree.balanced?
+puts 'Level order:'
+p tree.level_order
+puts 'Pre-order:'
+p tree.preorder
+puts 'In-order:'
+p tree.inorder
+puts 'Post-order:'
+p tree.postorder
